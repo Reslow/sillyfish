@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function Nav() {
   // burger menu that drops down on mobile size
   const [srcImg, setSrcImg] = useState(true);
+
   function toggleNavImg() {
     setSrcImg(!srcImg);
   }
