@@ -14,8 +14,8 @@ export default function Nav() {
       <img
         src={srcImg ? openIcon : closeIcon}
         alt="burger-open"
-        width="20px"
-        height="20px"
+        width="50px"
+        height="50px"
         onClick={toggleNavImg}
       />
     </section>
