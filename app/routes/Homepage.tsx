@@ -1,5 +1,4 @@
 import { Link } from "remix";
-import { getUserId } from "~/session.server";
 import Header from "./Header";
 
 export default function Homepage() {
@@ -14,7 +13,7 @@ export default function Homepage() {
             pathname: "/Cardfactory",
           }}
         >
-          Log in
+          create new card
         </Link>
       </div>
     </section>
