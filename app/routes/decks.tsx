@@ -4,19 +4,19 @@ import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
-import { getNoteListItems } from "~/models/note.server";
+import { getDeckListItems } from "~/models/deck.server";
 
 type LoaderData = {
-  noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
+  deckListItems: Awaited<ReturnType<typeof getDeckListItems>>;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  const noteListItems = await getNoteListItems({ userId });
-  return json<LoaderData>({ noteListItems });
+  const deckListItems = await getDeckListItems({ userId });
+  return json<LoaderData>({ deckListItems });
 };
 
-export default function NotesPage() {
+export default function DecksPage() {
   const data = useLoaderData() as LoaderData;
   const user = useUser();
 
@@ -24,7 +24,7 @@ export default function NotesPage() {
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
         <h1 className="text-3xl font-bold">
-          <Link to=".">Notes</Link>
+          <Link to=".">deck</Link>
         </h1>
         <p>{user.email}</p>
         <Form action="/logout" method="post">
@@ -45,19 +45,19 @@ export default function NotesPage() {
 
           <hr />
 
-          {data.noteListItems.length === 0 ? (
+          {data.deckListItems.length === 0 ? (
             <p className="p-4">No notes yet</p>
           ) : (
             <ol>
-              {data.noteListItems.map((note) => (
-                <li key={note.id}>
+              {data.deckListItems.map((deck) => (
+                <li key={deck.id}>
                   <NavLink
                     className={({ isActive }) =>
                       `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
                     }
-                    to={note.id}
+                    to={deck.id}
                   >
-                    📝 {note.title}
+                    📝 {deck.title}
                   </NavLink>
                 </li>
               ))}
