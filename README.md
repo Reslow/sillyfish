@@ -90,8 +90,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create two apps on Fly, one for staging and one for production:
 
   ```sh
-  fly create sillyfish-ebaa
-  fly create sillyfish-ebaa-staging
+  fly create cd----676e
+  fly create cd----676e-staging
   ```
 
 - Initialize Git.
@@ -111,14 +111,14 @@ Prior to your first deployment, you'll need to do a few things:
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
   ```sh
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app sillyfish-ebaa
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app sillyfish-ebaa-staging
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app cd----676e
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app cd----676e-staging
   ```
 
   > **Note:** When creating the staging secret, you may get a warning from the Fly CLI that looks like this:
   >
   > ```
-  > WARN app flag 'sillyfish-ebaa-staging' does not match app name in config file 'sillyfish-ebaa'
+  > WARN app flag 'cd----676e-staging' does not match app name in config file 'cd----676e'
   > ```
   >
   > This simply means that the current directory contains a config that references the production app we created in the first step. Ignore this warning and proceed to create the secret.
@@ -128,11 +128,11 @@ Prior to your first deployment, you'll need to do a few things:
 - Create a database for both your staging and production environments. Run the following:
 
   ```sh
-  fly postgres create --name sillyfish-ebaa-db
-  fly postgres attach --postgres-app sillyfish-ebaa-db --app sillyfish-ebaa
+  fly postgres create --name cd----676e-db
+  fly postgres attach --postgres-app cd----676e-db --app cd----676e
 
-  fly postgres create --name sillyfish-ebaa-staging-db
-  fly postgres attach --postgres-app sillyfish-ebaa-staging-db --app sillyfish-ebaa-staging
+  fly postgres create --name cd----676e-staging-db
+  fly postgres attach --postgres-app cd----676e-staging-db --app cd----676e-staging
   ```
 
   > **Note:** You'll get the same warning for the same reason when attaching the staging database that you did in the `fly set secret` step above. No worries. Proceed!
