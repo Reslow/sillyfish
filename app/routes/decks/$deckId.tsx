@@ -17,9 +17,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   console.log(params);
 
-  invariant(params.id, "decks not found");
+  invariant(params.deckId, "decks not found");
 
-  const deck = await getDeck({ userId, id: params.id });
+  const deck = await getDeck({ userId, id: params.deckId });
   if (!deck) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -28,9 +28,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
-  invariant(params.id, "deckId not found");
+  invariant(params.deckId, "deckId not found");
 
-  await deleteDeck({ userId, id: params.id });
+  await deleteDeck({ userId, id: params.deckId });
 
   return redirect("/decks");
 };
