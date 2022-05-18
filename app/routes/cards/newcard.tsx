@@ -62,7 +62,7 @@ export default function NewCardPage() {
           <span>Question</span>
           <input
             ref={nameRef}
-            name="title"
+            name="question"
             className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
             aria-invalid={actionData?.errors?.question ? true : undefined}
             aria-errormessage={
@@ -73,6 +73,26 @@ export default function NewCardPage() {
         {actionData?.errors?.question && (
           <div className="pt-1 text-red-700" id="title-error">
             {actionData.errors.question}
+          </div>
+        )}
+      </div>
+      {/* answer input */}
+      <div>
+        <label className="flex w-full flex-col gap-1">
+          <span>Answer</span>
+          <input
+            ref={nameRef}
+            name="answer"
+            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+            aria-invalid={actionData?.errors?.answer ? true : undefined}
+            aria-errormessage={
+              actionData?.errors?.answer ? "title-error" : undefined
+            }
+          />
+        </label>
+        {actionData?.errors?.answer && (
+          <div className="pt-1 text-red-700" id="title-error">
+            {actionData.errors.answer}
           </div>
         )}
       </div>

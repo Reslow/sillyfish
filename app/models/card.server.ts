@@ -8,7 +8,7 @@ export function getCard({
 }: Pick<Card, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.deck.findFirst({
+  return prisma.card.findFirst({
     where: { id, userId },
   });
 }
@@ -41,10 +41,10 @@ export function createCard({
   });
 }
 export function deleteCard({
-  question,
+  id,
   userId,
-}: Pick<Card, "question" | "answer"> & { userId: User["id"] }) {
+}: Pick<Card, "id"> & { userId: User["id"] }) {
   return prisma.card.deleteMany({
-    where: { question, userId },
+    where: { id, userId },
   });
 }
