@@ -1,6 +1,6 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useCatch, useLoaderData } from "@remix-run/react";
+import { Form, useCatch, useLoaderData, Link } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import type { Deck } from "~/models/deck.server";
@@ -50,6 +50,9 @@ export default function NoteDetailsPage() {
         >
           Delete
         </button>
+        <Link to="/cards/newcard" className="text-blue-500 underline">
+          add a new card to deck
+        </Link>
       </Form>
     </div>
   );
