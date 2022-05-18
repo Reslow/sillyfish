@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   return redirect("/decks");
 };
 
-export default function NoteDetailsPage() {
+export default function DeckDetailsPage() {
   const data = useLoaderData() as LoaderData;
 
   return (
