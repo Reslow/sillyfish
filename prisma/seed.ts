@@ -28,7 +28,7 @@ async function seed() {
     data: {
       question: "question",
       answer: "answer",
-      userId: user.id,
+      deckId: user.id,
     },
   });
 

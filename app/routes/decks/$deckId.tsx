@@ -1,21 +1,22 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useCatch, useLoaderData, Link } from "@remix-run/react";
-import invariant from "tiny-invariant";
+import { Form, useCatch, useLoaderData, useFetcher } from "@remix-run/react";
 
+import invariant from "tiny-invariant";
+import { getCardListItems } from "~/models/card.server";
 import type { Deck } from "~/models/deck.server";
 import { deleteDeck } from "~/models/deck.server";
 import { getDeck } from "~/models/deck.server";
 import { requireUserId } from "~/session.server";
+import type { CardItems } from "~/types";
 
 type LoaderData = {
   deck: Deck;
+  cardDeck: CardItems;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
-
-  console.log(params);
 
   invariant(params.deckId, "decks not found");
 
@@ -23,7 +24,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!deck) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json<LoaderData>({ deck });
+
+  const c = params.deckId;
+  const cardDeck = await getCardListItems({ deckId: c });
+  console.log(cardDeck);
+  return json<LoaderData>({ deck, cardDeck });
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -38,6 +43,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function DeckDetailsPage() {
   const data = useLoaderData() as LoaderData;
 
+  console.log(data);
+  const fetcher = useFetcher();
+
   return (
     <div>
       <h3 className="text-2xl font-bold">{data.deck.title}</h3>
@@ -50,10 +58,24 @@ export default function DeckDetailsPage() {
         >
           Delete
         </button>
-        <Link to="/cards/newcard" className="text-blue-500 underline">
-          add a new card to deck
-        </Link>
       </Form>
+      <fetcher.Form method="post" action="/cards/newcard">
+        <input type="hidden" name="deckId" value={data.deck.id} />
+        <input type="text" name="answer" />
+        <input type="text" name="question" />
+        <button type="submit" className="btn">
+          add
+        </button>
+      </fetcher.Form>
+
+      <section>
+        {data.cardDeck.map((item: any, i: any) => (
+          <section key={i}>
+            <h2> {item.question}</h2>
+            <h2> {item.answer}</h2>
+          </section>
+        ))}
+      </section>
     </div>
   );
 }

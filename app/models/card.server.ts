@@ -1,22 +1,22 @@
-import type { User, Card } from "@prisma/client";
+import type { Card, Deck } from "@prisma/client";
 import { prisma } from "~/db.server";
 export type { Card } from "@prisma/client";
 
 export function getCard({
   id,
-  userId,
+  deckId,
 }: Pick<Card, "id"> & {
-  userId: User["id"];
+  deckId: Deck["id"];
 }) {
   return prisma.card.findFirst({
-    where: { id, userId },
+    where: { id, deckId },
   });
 }
 
-export function getCardListItems({ userId }: { userId: User["id"] }) {
+export function getCardListItems({ deckId }: { deckId: Deck["id"] }) {
   return prisma.card.findMany({
-    where: { userId },
-    select: { id: true, question: true },
+    where: { deckId },
+    select: { id: true, question: true, answer: true },
     orderBy: { updatedAt: "desc" },
   });
 }
@@ -24,27 +24,28 @@ export function getCardListItems({ userId }: { userId: User["id"] }) {
 export function createCard({
   question,
   answer,
-  userId,
+  deckId,
 }: Pick<Card, "question" | "answer"> & {
-  userId: User["id"];
+  deckId: Deck["id"];
 }) {
   return prisma.card.create({
     data: {
       question,
       answer,
-      user: {
+      deck: {
         connect: {
-          id: userId,
+          id: deckId,
         },
       },
     },
   });
 }
+
 export function deleteCard({
   id,
-  userId,
-}: Pick<Card, "id"> & { userId: User["id"] }) {
+  deckId,
+}: Pick<Card, "id"> & { deckId: Deck["id"] }) {
   return prisma.card.deleteMany({
-    where: { id, userId },
+    where: { id, deckId },
   });
 }
