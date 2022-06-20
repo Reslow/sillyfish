@@ -25,13 +25,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const c = params.deckId;
-  const cardDeck = await getCardListItems({ deckId: c });
-  console.log(cardDeck);
+  const id = params.deckId;
+  const cardDeck = await getCardListItems({ deckId: id });
   return json<LoaderData>({ deck, cardDeck });
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
+  // console.log("params" + request);
   const userId = await requireUserId(request);
   invariant(params.deckId, "deckId not found");
 
@@ -43,7 +43,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function DeckDetailsPage() {
   const data = useLoaderData() as LoaderData;
 
-  console.log(data);
   const fetcher = useFetcher();
 
   return (
@@ -70,9 +69,20 @@ export default function DeckDetailsPage() {
 
       <section>
         {data.cardDeck.map((item: any, i: any) => (
-          <section key={i}>
+          <section key={item.id}>
             <h2> {item.question}</h2>
             <h2> {item.answer}</h2>
+            <fetcher.Form method="post" action="/cards/stack">
+              <input type="hidden" name="cardId" value={item.id} />
+              <input type="hidden" name="deckId" value={data.deck.id} />
+
+              <button
+                type="submit"
+                className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+              >
+                Delete
+              </button>
+            </fetcher.Form>
           </section>
         ))}
       </section>
