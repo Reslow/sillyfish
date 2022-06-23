@@ -9,6 +9,7 @@ import { deleteDeck } from "~/models/deck.server";
 import { getDeck } from "~/models/deck.server";
 import { requireUserId } from "~/session.server";
 import type { CardItems } from "~/types";
+import Modal from "../../components/Modal";
 
 type LoaderData = {
   deck: Deck;
@@ -43,12 +44,16 @@ export default function DeckDetailsPage() {
   const [showModal, setShowModal] = useState(false);
   const [answer, setAnswer] = useState("");
   const [counter, setCounter] = useState(0);
+  const [open, setOpen] = useState(true);
+  const [missed, setMissed] = useState<CardItems>([]);
+  const [gameOver, setGameOver] = useState(false);
 
   function startGame() {
     setShowModal(true);
   }
   function exitGame() {
     setCounter(0);
+    setGameOver(true);
     setShowModal(false);
   }
 
@@ -59,14 +64,14 @@ export default function DeckDetailsPage() {
       return displayQuestion;
     }
   }
-
   const data = useLoaderData() as LoaderData;
   const fetcher = useFetcher();
 
   function increase() {
-    console.log("youtube");
     if (counter < data.cardDeck.length) {
       setCounter((count) => count + 1);
+    } else {
+      exitGame();
     }
   }
 
@@ -81,21 +86,29 @@ export default function DeckDetailsPage() {
     const findObject = data.cardDeck.find(
       (element) => element.question === displayQuestion
     );
-    console.log(findObject);
+
     if (findObject) {
-      console.log("hej");
-      console.log(answer);
-      if (findObject.answer === answer) {
+      if (findObject.answer == answer) {
         console.log("match");
       } else {
         console.log("miss");
+        setMissed((oldArr) => [...oldArr, findObject]);
       }
       setAnswer("");
-    }
+    } else return;
   }
 
   return (
     <div>
+      {gameOver && (
+        <Modal
+          open={open}
+          setOpen={setOpen}
+          missed={missed}
+          deckLength={data.cardDeck.length}
+        />
+      )}
+
       <h3 className="text-2xl font-bold">{data.deck.title}</h3>
       <p className="py-6">{data.deck.title}</p>
       <hr className="my-4" />
@@ -150,20 +163,15 @@ export default function DeckDetailsPage() {
         <section>
           <h1>Lets play a game</h1>
           <section>
-            {console.log(counter, data.cardDeck.length)}
-            {counter <= data.cardDeck.length - 1 ? (
-              <section>
-                <h2 id="question">{displayQuestion}</h2>
-                <button
-                  className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-                  onClick={handleSubmitAnswer}
-                >
-                  Submit
-                </button>
-              </section>
-            ) : (
-              ""
-            )}
+            <section>
+              <h2 id="question">{displayQuestion}</h2>
+              <button
+                className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+                onClick={handleSubmitAnswer}
+              >
+                Submit
+              </button>
+            </section>
 
             <input
               type="text"
