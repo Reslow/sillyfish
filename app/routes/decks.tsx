@@ -40,13 +40,13 @@ export default function DecksPage() {
       <main className="flex h-full bg-white">
         <div className="h-full w-80 border-r bg-gray-50">
           <Link to="new" className="block p-4 text-xl text-blue-500">
-            + New Note
+            + new deck
           </Link>
 
           <hr />
 
           {data.deckListItems.length === 0 ? (
-            <p className="p-4">No notes yet</p>
+            <p className="p-4">No deck of study cards yet</p>
           ) : (
             <ol>
               {data.deckListItems.map((deck) => (
@@ -57,7 +57,7 @@ export default function DecksPage() {
                     }
                     to={deck.id}
                   >
-                    📝 {deck.title}
+                    {deck.title}
                   </NavLink>
                 </li>
               ))}
