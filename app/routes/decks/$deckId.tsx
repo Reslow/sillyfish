@@ -49,16 +49,21 @@ export default function DeckDetailsPage() {
   const [gameOver, setGameOver] = useState(false);
 
   function startGame() {
+    console.log("start");
     setGameOver(false);
     setShowModal(true);
+    setOpen(true);
   }
+
   function exitGame() {
     setCounter(0);
     setGameOver(true);
     setShowModal(false);
+    setMissed([]);
   }
 
   let displayQuestion = "";
+
   function getOneQuestion(arrayofcards: any) {
     if (counter < arrayofcards.length) {
       displayQuestion = arrayofcards[counter].question;
@@ -69,6 +74,8 @@ export default function DeckDetailsPage() {
   const fetcher = useFetcher();
 
   function increase() {
+    console.log(counter);
+    console.log(data.cardDeck.length);
     if (counter < data.cardDeck.length - 1) {
       setCounter((count) => count + 1);
     } else {
@@ -98,6 +105,8 @@ export default function DeckDetailsPage() {
       setAnswer("");
     } else return;
   }
+
+  console.log(gameOver, "gameover");
 
   return (
     <div>

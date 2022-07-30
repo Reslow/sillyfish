@@ -12,9 +12,6 @@ type Props = {
 };
 
 export default function Modal({ open, setOpen, missed, deckLength }: Props) {
-  console.log(missed);
-  console.log(deckLength);
-
   const location = useLocation();
   function handleClose() {
     setOpen(false);
