@@ -49,6 +49,7 @@ export default function DeckDetailsPage() {
   const [gameOver, setGameOver] = useState(false);
 
   function startGame() {
+    setGameOver(false);
     setShowModal(true);
   }
   function exitGame() {
@@ -68,7 +69,7 @@ export default function DeckDetailsPage() {
   const fetcher = useFetcher();
 
   function increase() {
-    if (counter < data.cardDeck.length) {
+    if (counter < data.cardDeck.length - 1) {
       setCounter((count) => count + 1);
     } else {
       exitGame();
