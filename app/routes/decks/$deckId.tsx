@@ -49,7 +49,6 @@ export default function DeckDetailsPage() {
   const [gameOver, setGameOver] = useState(false);
 
   function startGame() {
-    console.log("start");
     setGameOver(false);
     setShowModal(true);
     setOpen(true);
@@ -74,8 +73,6 @@ export default function DeckDetailsPage() {
   const fetcher = useFetcher();
 
   function increase() {
-    console.log(counter);
-    console.log(data.cardDeck.length);
     if (counter < data.cardDeck.length - 1) {
       setCounter((count) => count + 1);
     } else {
@@ -106,8 +103,6 @@ export default function DeckDetailsPage() {
     } else return;
   }
 
-  console.log(gameOver, "gameover");
-
   return (
     <div>
       {gameOver && (
@@ -119,55 +114,80 @@ export default function DeckDetailsPage() {
         />
       )}
 
-      <h3 className="text-2xl font-bold">{data.deck.title}</h3>
-      <p className="py-6">{data.deck.title}</p>
-      <hr className="my-4" />
-      <Form method="post">
-        <button
-          type="submit"
-          className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+      <section className="container flex flex-row justify-between ">
+        <h3 className="text-2xl font-bold">{data.deck.title}</h3>
+        <Form method="post">
+          <button
+            type="submit"
+            className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+          >
+            Delete
+          </button>
+        </Form>
+      </section>
+
+      <section className="container">
+        <h2>add cards to deck</h2>
+        <fetcher.Form
+          method="post"
+          action="/cards/newcard"
+          className="flex flex-col"
         >
-          Delete
-        </button>
-      </Form>
-      <fetcher.Form method="post" action="/cards/newcard">
-        <input type="hidden" name="deckId" value={data.deck.id} />
-        <input type="text" name="question" />
-        <input type="text" name="answer" />
-        <button type="submit" className="btn">
-          add
-        </button>
-      </fetcher.Form>
+          <input type="hidden" name="deckId" value={data.deck.id} />
+          <input
+            type="text"
+            placeholder="set question"
+            name="set question"
+            className="bg-indigo-200 p-4"
+          />
+          <input
+            type="text"
+            name="answer"
+            placeholder="set answer"
+            className="bg-indigo-200 p-4"
+          />
+          <button type="submit" className="bg-green-200 p-4">
+            +
+          </button>
+        </fetcher.Form>
+      </section>
 
       {!showModal ? (
-        <section>
-          <Form>
-            <button
-              className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-              onClick={startGame}
-              type="button"
-            >
-              play game
-            </button>
-          </Form>
+        <section className="container mt-6 ">
+          <section className=" container flex justify-center">
+            <Form>
+              <button
+                className="flex justify-center rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+                onClick={startGame}
+                type="button"
+              >
+                play
+              </button>
+            </Form>
+          </section>
+          <h3>cards in deck</h3>
+          <section className="container mt-6 grid grid-cols-3 gap-2">
+            {data.cardDeck.map((item: any, i: any) => (
+              <section
+                key={item.id}
+                className="container mb-8 flex flex-col rounded bg-indigo-200 p-4 text-center"
+              >
+                <h2 className="font-bold"> {item.question} ?</h2>
+                <h2> {item.answer}</h2>
+                <fetcher.Form method="post" action="/cards/stack">
+                  <input type="hidden" name="cardId" value={item.id} />
+                  <input type="hidden" name="deckId" value={data.deck.id} />
 
-          {data.cardDeck.map((item: any, i: any) => (
-            <section key={item.id}>
-              <h2> {item.question}</h2>
-              <h2> {item.answer}</h2>
-              <fetcher.Form method="post" action="/cards/stack">
-                <input type="hidden" name="cardId" value={item.id} />
-                <input type="hidden" name="deckId" value={data.deck.id} />
-
-                <button
-                  type="submit"
-                  className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-                >
-                  Delete
-                </button>
-              </fetcher.Form>
-            </section>
-          ))}
+                  <button
+                    type="submit"
+                    className="mt-4 rounded  bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+                  >
+                    Delete
+                  </button>
+                </fetcher.Form>
+              </section>
+            ))}
+          </section>
         </section>
       ) : (
         <section>
@@ -179,7 +199,7 @@ export default function DeckDetailsPage() {
                 className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
                 onClick={handleSubmitAnswer}
               >
-                Submit
+                next
               </button>
             </section>
 
