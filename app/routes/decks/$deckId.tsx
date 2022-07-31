@@ -137,7 +137,7 @@ export default function DeckDetailsPage() {
           <input
             type="text"
             placeholder="set question"
-            name="set question"
+            name="question"
             className="bg-indigo-200 p-4"
           />
           <input
@@ -165,7 +165,7 @@ export default function DeckDetailsPage() {
               </button>
             </Form>
           </section>
-          <h3>cards in deck</h3>
+          <h3>{data.cardDeck.length} cards in deck</h3>
           <section className="container mt-6 grid grid-cols-3 gap-2">
             {data.cardDeck.map((item: any, i: any) => (
               <section
