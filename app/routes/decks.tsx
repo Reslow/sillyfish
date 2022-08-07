@@ -60,9 +60,11 @@ export default function DecksPage() {
                 <li key={deck.id}>
                   <NavLink
                     className={({ isActive }) =>
-                      `row text-l flex justify-center rounded border-b bg-pink-500 p-4 text-white ${
-                        isActive ? "bg-white" : ""
-                      }`
+                      `row text-l flex
+                      h-28 items-center
+                       justify-center rounded border-b bg-slate-100 p-4 text-center font-bold text-slate-500 shadow-3xl shadow-slate-600 ${
+                         isActive ? "bg-white" : ""
+                       }`
                     }
                     to={deck.id}
                   >
