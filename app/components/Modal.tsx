@@ -48,29 +48,31 @@ export default function Modal({ open, setOpen, missed, deckLength }: Props) {
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div>
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <h1 className="h-6 w-6 text-green-600" aria-hidden="true">
-                      !
+                  <div className="mx-auto flex w-full items-center justify-center ">
+                    <h1
+                      className="h-6 w-16 text-center font-bold text-green-600"
+                      aria-hidden="true"
+                    >
+                      Result
                     </h1>
                   </div>
                   <div className="mt-3 text-center sm:mt-5">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-lg font-medium leading-6 text-gray-900"
-                    >
-                      Done!
-                    </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
+                      <p className="mb-4 text-sm text-gray-500">
                         You answered
                         {missed.length - deckLength} of
-                        {deckLength} correct! Well done
+                        {deckLength} correct!
                       </p>
                       {missed.length > 0 && (
                         <div>
-                          you missed following...
+                          you need practise on...
                           {missed.map((obj) => {
-                            return <p key={obj.id}>{obj.question}</p>;
+                            return (
+                              <div key={obj.id}>
+                                <p>Q: {obj.question}</p>
+                                <p>A: {obj.answer}</p>
+                              </div>
+                            );
                           })}
                         </div>
                       )}
