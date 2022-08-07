@@ -44,21 +44,25 @@ export default function DecksPage() {
           <Outlet />
         </div>
         <div className="h-full border-r bg-red-50">
-          <Link to="new" className="block p-4 text-xl text-green-500">
-            create
-          </Link>
+          <button className="m-2 rounded bg-blue-500">
+            <Link to="new" className="block p-4 text-xl text-green-50">
+              create +
+            </Link>
+          </button>
 
           <hr />
 
           {data.deckListItems.length === 0 ? (
-            <p className="p-4">No deck of study cards yet</p>
+            <p className="p-4">No deck of flashcards yet</p>
           ) : (
-            <ol>
+            <ol className="grid grid-cols-2 gap-4  p-2">
               {data.deckListItems.map((deck) => (
                 <li key={deck.id}>
                   <NavLink
                     className={({ isActive }) =>
-                      `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
+                      `row text-l flex justify-center rounded border-b bg-pink-500 p-4 text-white ${
+                        isActive ? "bg-white" : ""
+                      }`
                     }
                     to={deck.id}
                   >
